@@ -44,7 +44,6 @@ class Canvas(object):
 
         self.canvas[x][y] = color
 
-
     def print_vertical(self, x, y1, y2, color):
         """
         This method parses the args of the command V of the enunciation
@@ -78,7 +77,7 @@ class Canvas(object):
         x2 -- integer (horizontal start point)
         color -- any valid string or interger
         """
-        
+
         y = int(y)-1
         x1 = int(x1)-1
         x2 = int(x2)-1

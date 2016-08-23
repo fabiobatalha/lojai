@@ -4,7 +4,6 @@ import logging
 import logging.config
 
 from paint.canvas import Canvas
-from paint.commands import parse_command
 
 logger = logging.getLogger(__name__)
 
@@ -50,14 +49,8 @@ def parse_file(filename):
 
             command = line.strip().upper().split(' ')
 
-            try:
-                parsed_command = parse_command(command)
-            except ValueError:
-                continue
-            except TypeError:
-                continue
+            yield (command[0], command[1:])
 
-            yield parsed_command
 
 def run(filename):
 
@@ -74,11 +67,17 @@ def run(filename):
         'X': 'exit'
     }
 
+    iteration = 0
     for command, params in parse_file(filename):
+        iteration += 1
+        print('round (%d): %s %s' % (iteration, command, str(params)))
         if command == 'X':
             exit()
-        mapping[command](*params)
-        print('round')
+        try:
+            mapping[command](*params)
+        except KeyError:
+            logger.warning('Unkow command %s, skipping command.' % command)
+
         print(canvas.picture)
 
 
