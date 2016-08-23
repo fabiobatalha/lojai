@@ -41,6 +41,7 @@ def parse_file(filename):
         fname = open(filename, 'r')
     except:
         logger.error('File do no exists %s' % filename)
+        exit()
 
     with fname as f:
         for line in f:

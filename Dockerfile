@@ -9,4 +9,4 @@ WORKDIR /app
 RUN python setup.py install
 RUN python setup.py nosetests --with-coverage
 
-CMD ["playchess", "--help"]
+CMD ["paintcanvas", "--help"]
