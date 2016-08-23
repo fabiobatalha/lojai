@@ -25,6 +25,18 @@ class TestCanvas(unittest.TestCase):
 
         self.assertEqual(expected, canvas.canvas)
 
+    def test_pixels_around(self):
+
+        canvas = Canvas(4, 4)
+
+        pixels_around = canvas.pixels_around(2, 3)
+
+        expected = [
+            (1, 2), (2, 2), (3, 2), (1, 3), (3, 3), (1, 4), (2, 4), (3, 4)
+        ]
+
+        self.assertEqual(expected, pixels_around)
+
     def test_build_canvas_1(self):
         """
         Testing create matrix command with invalid args signature
