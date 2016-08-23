@@ -1,9 +1,10 @@
 I 5 6
 L 2 3 A
 S one.bmp
+O 1 2
 G 2 3 J
 V 2 3 4 W
-H 3 4 2 Z
+H 2 3 4 Z
 F 3 3 J
 S two.bmp
 X

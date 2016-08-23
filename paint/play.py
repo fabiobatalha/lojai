@@ -4,6 +4,7 @@ import logging
 import logging.config
 
 from paint.canvas import Canvas
+from paint.commands import parse_command
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +23,7 @@ LOGGING = {
         }
     },
     'loggers': {
-        'masterchess': {
+        'paint': {
             'handlers': ['console'],
             'level': 'DEBUG'
         }
@@ -31,11 +32,12 @@ LOGGING = {
 
 logging.config.dictConfig(LOGGING)
 
-ALLOWED_COMMANDS = ['I', 'C', 'L', 'V', 'H', 'K', 'F', 'S', 'X']
 
-
-def read_file(filename):
-
+def parse_file(filename):
+    """
+    This method read the input file with the commands and parse each command.
+    The error are thrown to the stdout.
+    """
     try:
         fname = open(filename, 'r')
     except:
@@ -43,17 +45,41 @@ def read_file(filename):
 
     with fname as f:
         for line in f:
-            command = line.strip().upper().split(' ')
-            if command[0] not in ALLOWED_COMMANDS:
+            if line.strip()[0] == "#":
                 continue
 
-            yield command
+            command = line.strip().upper().split(' ')
 
+            try:
+                parsed_command = parse_command(command)
+            except ValueError:
+                continue
+            except TypeError:
+                continue
+
+            yield parsed_command
 
 def run(filename):
 
-    for command in read_file(filename):
-        print(command)
+    canvas = Canvas()
+
+    mapping = {
+        'I': canvas.build_canvas,
+        'L': canvas.print_pixel,
+        'S': canvas.write_file,
+        'V': canvas.print_vertical,
+        'H': canvas.print_horizontal,
+        'F': canvas.print_region,
+        'K': canvas.print_square,
+        'X': 'exit'
+    }
+
+    for command, params in parse_file(filename):
+        if command == 'X':
+            exit()
+        mapping[command](*params)
+        print('round')
+        print(canvas.picture)
 
 
 def main():
